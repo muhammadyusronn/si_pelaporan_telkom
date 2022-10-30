@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width initial-scale=1.0">
     <title><?= $title; ?></title>
     <!-- Title Icon -->
-    <link rel="icon" type="image/x-icon" href="<?php base_url() ?>assets/img/perkim.jpeg">
+    <link rel="icon" type="image/x-icon" href="<?php base_url() ?>assets/frontend/img/favicon.png">
     <!-- GLOBAL MAINLY STYLES-->
     <link href="<?= base_url() ?>assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?= base_url() ?>assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -42,8 +42,8 @@
             <div class="page-brand">
                 <a class="link" href="<?= base_url('dash') ?>">
                     <a class="nav-link brand" data-toggle="dropdown">
-                        <img src="<?= base_url() ?>assets/img/perkim.jpeg" style="max-width:30px;" />
-                        <span class="ml-2"></span>SIAP PAK
+                        <img src="<?= base_url() ?>assets/frontend/img/favicon.png" style="max-width:30px;" />
+                        <span class="ml-2"></span>TELKOM
                     </a>
                     <span class="brand-mini">
                         <img src="<?= base_url() ?>assets/img/perkim.jpeg" style="max-width:30px;" />
@@ -103,12 +103,6 @@
                             </a>
                         </li>
                     <?php } ?>
-                    <li class="heading">Data</li>
-                    <li>
-                        <a class="active" href="<?= base_url('pembangunan-jalan') ?>"><i class="sidebar-item-icon fa fa-road"></i>
-                            <span class="nav-label">Pembangunan Jalan</span>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </nav>

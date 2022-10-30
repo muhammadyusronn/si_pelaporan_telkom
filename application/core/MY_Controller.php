@@ -155,15 +155,10 @@ class MY_Controller extends CI_Controller
     }
     protected function renders($view, $data = '')
     {
-        $this->load->view('backend/layouts/head-login', $data);
-        $this->load->view($view, $data);
-        $this->load->view('backend/layouts/foot-login');
-    }
-    protected function renderp($view, $data = '')
-    {
-        $this->load->view('backend/layouts/head-pengunjung', $data);
-        $this->load->view($view, $data);
-        $this->load->view('backend/layouts/foot-pengunjung');
+        $this->load->view('frontend/layouts/header', $data);
+        $this->load->view('frontend/layouts/nav', $data);
+        $this->load->view('frontend/' . $view, $data);
+        $this->load->view('frontend/layouts/footer');
     }
     protected function flashmsg($msg, $type = 'success', $name = 'msg')
     {

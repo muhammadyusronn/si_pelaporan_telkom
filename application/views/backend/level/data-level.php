@@ -11,7 +11,8 @@
     </div>
     <div class="page-content fade-in-up">
         <a href="<?= base_url('level/create') ?>" class="btn btn-primary mb-3"><i class="fa fa-plus"></i> Tambah Data</a>
-        <?php echo $this->session->flashdata('msg'); ?>
+        <?php echo $this->session->flashdata('msg');
+        unset($_SESSION['msg']); ?>
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title"><?= $title ?></div>

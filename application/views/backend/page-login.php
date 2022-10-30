@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width initial-scale=1.0">
     <title>Login</title>
     <!-- Title Icon -->
-    <link rel="icon" type="image/x-icon" href="<?php base_url() ?>assets/img/perkim.jpeg">
+    <link rel="icon" type="image/x-icon" href="<?php base_url() ?>assets/frontend/img/favicon.png">
     <!-- GLOBAL MAINLY STYLES-->
     <link href="<?= base_url() ?>assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?= base_url() ?>assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -22,8 +22,8 @@
     <div class="content">
         <form id="login-form" class="mt-4" action="<?= base_url('login') ?>" method="post">
             <div class="text-center mb-4">
-                <img src="<?php base_url() ?>assets/img/perkim.jpeg" class="img-thumbnail mb-2" style="max-width: 80px ;">
-                <h3>Sistem Informasi Pendataan Kegiatan Dinas Perkim Kab. OKU</h3>
+                <img src="<?php base_url() ?>assets/frontend/img/favicon.png" class="img-thumbnail mb-2" style="max-width: 80px ;">
+                <h3>Sistem Informasi Pelayanan Gangguan PT. Telkom Indonesia Kab. OKU</h3>
             </div>
             <?php echo $this->session->flashdata('msg'); ?>
             <div class="form-group">
