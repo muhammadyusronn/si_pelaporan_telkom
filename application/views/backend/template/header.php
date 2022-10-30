@@ -46,7 +46,7 @@
                         <span class="ml-2"></span>TELKOM
                     </a>
                     <span class="brand-mini">
-                        <img src="<?= base_url() ?>assets/img/perkim.jpeg" style="max-width:30px;" />
+                        <img src="<?= base_url() ?>assets/frontend/img/favicon.png" style="max-width:30px;" />
                     </span>
                 </a>
             </div>
