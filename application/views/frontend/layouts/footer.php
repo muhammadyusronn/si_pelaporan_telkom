@@ -25,7 +25,7 @@
 <script src="<?= base_url() ?>assets/frontend/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 <script src="<?= base_url() ?>assets/frontend/vendor/swiper/swiper-bundle.min.js"></script>
 <script src="<?= base_url() ?>assets/frontend/vendor/waypoints/noframework.waypoints.js"></script>
-<script src="<?= base_url() ?>assets/frontend/vendor/php-email-form/validate.js"></script>
+<!-- <script src="<?= base_url() ?>assets/frontend/vendor/php-email-form/validate.js"></script> -->
 
 <!-- Template Main JS File -->
 <script src="<?= base_url() ?>assets/frontend/js/main.js"></script>

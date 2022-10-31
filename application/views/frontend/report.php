@@ -35,7 +35,14 @@
 
                 <div class="col-lg-8 mt-5 mt-lg-0">
 
-                    <form action="https://www.free-css.com/template-categories/personal?start=120" method="post" role="form" class="php-email-form">
+                    <form action="<?= base_url('report/create') ?>" method="post" class="php-email-form">
+                        <div class="col-md-12">
+                            <?php echo $this->session->flashdata('msg');
+                            unset($_SESSION['msg']); ?>
+                            <div id="alert" class="alert alert-danger fade hide" role="alert">
+                                <strong>ERROR</strong> <span id="alert-message"></span>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <input type="text" name="pelanggan_id" class="form-control" id="pelanggan_id" placeholder="ID Pelanggan" required>
@@ -55,12 +62,7 @@
                         <div class="form-group mt-3">
                             <textarea class="form-control" name="laporan_text" rows="5" placeholder="Silahkan masukan laporan anda" required></textarea>
                         </div>
-                        <div class="my-3">
-                            <div class="loading">Loading</div>
-                            <div class="error-message"></div>
-                            <div class="sent-message">Your message has been sent. Thank you!</div>
-                        </div>
-                        <!-- <div class="text-center"><button type="submit">Send Message</button></div> -->
+                        <div class="text-center"><button type="submit" name="submit">Send Message</button></div>
                     </form>
 
                 </div>
@@ -69,5 +71,28 @@
 
         </div>
     </section><!-- End Contact Section -->
-
+    <input type="hidden" id="url" value="<?= base_url() ?>">
 </main><!-- End #main -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $('#pelanggan_id').bind('keyup', function() {
+        var url = $("#url").val() + 'report/get_pelanggan/' + $("#pelanggan_id").val();
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(res) {
+                var objJSON = JSON.parse(res);
+                console.log(objJSON.status)
+                if (objJSON.status === 'Failed') {
+                    $('#alert').removeClass('hide').addClass('show');
+                    $('#alert-message').text(objJSON.message);
+                } else {
+                    $('#alert').hide();
+                    $('#pelanggan_nama').val(objJSON.data.pelanggan_nama)
+                    $('#pelanggan_telepon').val(objJSON.data.pelanggan_telepon)
+                    $('#pelanggan_alamat').val(objJSON.data.pelanggan_alamat)
+                }
+            }
+        });
+    });
+</script>

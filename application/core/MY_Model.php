@@ -120,6 +120,12 @@ class MY_Model extends CI_Model
         return $this->db->insert($this->data['table_name'], $data);
     }
 
+    public function insertID($data)
+    {
+        $this->db->insert($this->data['table_name'], $data);
+        return $this->db->insert_id();
+    }
+
     public function update($pk, $data)
     {
         $this->db->where($this->data['primary_key'], $pk);

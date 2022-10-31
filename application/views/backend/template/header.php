@@ -103,6 +103,12 @@
                             </a>
                         </li>
                     <?php } ?>
+                    <li class="heading">Data</li>
+                    <li>
+                        <a class="active" href="<?= base_url('laporan') ?>"><i class="sidebar-item-icon fa fa-book"></i>
+                            <span class="nav-label">Laporan</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
