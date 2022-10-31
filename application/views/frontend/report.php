@@ -39,9 +39,10 @@
                         <div class="col-md-12">
                             <?php echo $this->session->flashdata('msg');
                             unset($_SESSION['msg']); ?>
-                            <div id="alert" class="alert alert-danger fade hide" role="alert">
+                            <div id="alert" class="alert alert-danger fade show" role="alert">
                                 <strong>ERROR</strong> <span id="alert-message"></span>
                             </div>
+                            <p id="alert-text" class="text-danger">Mohon Lengkapi data!</p>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
@@ -75,24 +76,37 @@
 </main><!-- End #main -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    $('#pelanggan_id').bind('keyup', function() {
-        var url = $("#url").val() + 'report/get_pelanggan/' + $("#pelanggan_id").val();
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function(res) {
-                var objJSON = JSON.parse(res);
-                console.log(objJSON.status)
-                if (objJSON.status === 'Failed') {
-                    $('#alert').removeClass('hide').addClass('show');
-                    $('#alert-message').text(objJSON.message);
-                } else {
-                    $('#alert').hide();
-                    $('#pelanggan_nama').val(objJSON.data.pelanggan_nama)
-                    $('#pelanggan_telepon').val(objJSON.data.pelanggan_telepon)
-                    $('#pelanggan_alamat').val(objJSON.data.pelanggan_alamat)
+    $(document).ready(function() {
+        check()
+        $('#alert').hide();
+        $('#pelanggan_id').bind('keyup', function() {
+            check()
+            var url = $("#url").val() + 'report/get_pelanggan/' + $("#pelanggan_id").val();
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(res) {
+                    var objJSON = JSON.parse(res);
+                    if (objJSON.status === 'Failed') {
+                        $('#alert').show();
+                        $('#alert-message').text(objJSON.message);
+                    } else {
+                        $('#alert').hide();
+                        $(':input[type="submit"]').prop('disabled', false);
+                        $('#alert-text').hide();
+                        $('#pelanggan_nama').val(objJSON.data.pelanggan_nama)
+                        $('#pelanggan_telepon').val(objJSON.data.pelanggan_telepon)
+                        $('#pelanggan_alamat').val(objJSON.data.pelanggan_alamat)
+                    }
                 }
-            }
+            });
         });
-    });
+    })
+
+    function check() {
+        if ($('#pelanggan_id').val().length == 0 || $('#pelanggan_nama').val().length == 0 || $('#pelanggan_telepon').val().length == 0 || $('#pelanggan_alamat').val().length == 0) {
+            $(':input[type="submit"]').prop('disabled', true);
+            $('#alert-text').show();
+        }
+    }
 </script>
