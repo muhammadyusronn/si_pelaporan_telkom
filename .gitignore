@@ -1,6 +1,7 @@
 .DS_Store
 uploads/*
 application/cache/*
+application/.env
 !application/cache/index.html
 
 application/logs/*
