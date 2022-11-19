@@ -5,6 +5,8 @@ class ReportController extends MY_Controller
     {
         parent::__construct();
         $this->load->model('ReportModel');
+        $this->load->model('TeknisiModel');
+        $this->load->model('LaporanHistoryModel');
         $this->data['token'] = $this->session->userdata('token');
         if (empty($this->data['token'])) {
             $this->flashmsg('Anda harus login dulu!', 'danger');
@@ -16,5 +18,48 @@ class ReportController extends MY_Controller
         $data['title'] = 'Data Laporan';
         $data['laporan'] = $this->ReportModel->get_laporan();
         $this->render('backend/laporan/data-laporan', $data);
+    }
+
+    public function proses($id = null)
+    {
+        if (isset($_POST['submit'])) {
+            $this->db->trans_start();
+            $insert = $this->ReportModel->update($this->POST('laporan_id'), ['laporan_status' => 'Proses']);
+            $this->db->trans_complete();
+            if ($this->db->trans_status() === FALSE) {
+                $this->flashmsg('Gagal mengubah data', 'danger');
+                redirect('laporan');
+            } else {
+                $this->flashmsg('Sukses mengubah data', 'success');
+                redirect('laporan');
+            }
+        } else {
+            $data['title'] = 'Proses Laporan';
+            $data['data_laporan'] = $this->ReportModel->get_laporan_by_id($id);
+            $data['data_teknisi'] = $this->TeknisiModel->get($id);
+            $this->render('backend/laporan/proses-laporan', $data);
+        }
+    }
+
+    public function reject($id = null)
+    {
+        $this->db->trans_start();
+        $this->ReportModel->update($id, ['laporan_status' => 'Ditolak']);
+        $this->LaporanHistoryModel->insert(
+            [
+                'laporan_id' => $id,
+                'actor' => 'Admin',
+                'text' => 'Laporan Ditolak',
+                'created_at' => date("Y-m-d H:i:s")
+            ]
+        );
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE) {
+            $this->flashmsg('Gagal menolak laporan', 'danger');
+            redirect('laporan');
+        } else {
+            $this->flashmsg('Sukses menolak laporan ', 'success');
+            redirect('laporan');
+        }
     }
 }

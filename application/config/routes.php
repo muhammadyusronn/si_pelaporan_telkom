@@ -22,7 +22,19 @@ $route['level']                     = 'backend/LevelController/index';
 $route['level/create']              = 'backend/LevelController/create';
 $route['level/update/(:num)']       = 'backend/LevelController/edit/$1';
 
+// Routing Pelanggan
+$route['pelanggan']                     = 'backend/PelangganController/index';
+$route['pelanggan/create']              = 'backend/PelangganController/create';
+$route['pelanggan/update/(:num)']       = 'backend/PelangganController/edit/$1';
+
+// Routing Teknisi
+$route['teknisi']                     = 'backend/TeknisiController/index';
+$route['teknisi/create']              = 'backend/TeknisiController/create';
+$route['teknisi/update/(:num)']       = 'backend/TeknisiController/edit/$1';
+
 $route['laporan']                     = 'backend/ReportController/index';
+$route['laporan/proses/(:num)']       = 'backend/ReportController/proses/$1';
+$route['laporan/reject/(:num)']       = 'backend/ReportController/reject/$1';
 
 //$route['default_controller'] = 'welcome';
 $route['404_override'] = '';

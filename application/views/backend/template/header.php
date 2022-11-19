@@ -102,6 +102,16 @@
                                 <span class="nav-label">Admin</span>
                             </a>
                         </li>
+                        <li>
+                            <a class="active" href="<?= base_url('pelanggan') ?>"><i class="sidebar-item-icon fa fa-users"></i>
+                                <span class="nav-label">Pelanggan</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="active" href="<?= base_url('teknisi') ?>"><i class="sidebar-item-icon fa fa-wrench"></i>
+                                <span class="nav-label">Teknisi</span>
+                            </a>
+                        </li>
                     <?php } ?>
                     <li class="heading">Data</li>
                     <li>

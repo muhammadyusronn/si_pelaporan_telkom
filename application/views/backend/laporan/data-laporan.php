@@ -23,7 +23,9 @@
                             <th>Pelapor</th>
                             <th>Laporan</th>
                             <th>Status</th>
-                            <th></th>
+                            <?php if ($this->data['token']['level'] == '1') { ?>
+                                <th></th>
+                            <?php } ?>
                         </tr>
                     </thead>
                     <tfoot>
@@ -31,7 +33,9 @@
                             <th>Pelapor</th>
                             <th>Laporan</th>
                             <th>Status</th>
-                            <th></th>
+                            <?php if ($this->data['token']['level'] == '1') { ?>
+                                <th></th>
+                            <?php } ?>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -50,10 +54,15 @@
                                 <td><?= $i->pelanggan_nama; ?></td>
                                 <td><?= $i->laporan_text; ?></td>
                                 <td><span class="badge badge-<?= $badges ?>"><?= $i->laporan_status ?></span></td>
-                                <td>
-                                    <a href="" class="btn btn-warning" title="PROSES" onclick="javascript: return alert('Fitur belum tersedia')"><i class="fa fa-pencil"></i></a>
-                                    <a href="" class="btn btn-danger" title="TOLAK" onclick="javascript: return alert('Fitur belum tersedia')"><i class="fa fa-ban"></i></a>
-                                </td>
+                                <?php if ($this->data['token']['level'] == '1') { ?>
+                                    <td>
+                                        <?php if ($i->laporan_status == "Menunggu") { ?>
+                                            <a href="<?= base_url('laporan/proses/' . $i->laporan_id) ?>" class="btn btn-warning" title="PROSES"><i class="fa fa-pencil"></i></a>
+                                            <a href="<?= base_url('laporan/reject/' . $i->laporan_id) ?>" class="btn btn-danger" title="TOLAK" onclick="javascript: return confirm('Anda yakin untuk menolak laporan ini?')"><i class="fa fa-ban"></i></a>
+                                        <?php } ?>
+                                        <a class="btn btn-info" title="DETAIL"><i class="fa fa-eye text-white"></i></a>
+                                    </td>
+                                <?php } ?>
                             </tr>
                         <?php endforeach; ?>
                 </table>
