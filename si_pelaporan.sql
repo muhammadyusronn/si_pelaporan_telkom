@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 30 Okt 2022 pada 08.33
+-- Waktu pembuatan: 24 Des 2022 pada 14.22
 -- Versi server: 10.4.21-MariaDB
--- Versi PHP: 7.3.33
+-- Versi PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `laporan` (
   `laporan_id` int(11) NOT NULL,
-  `laporan_pelanggan` varchar(50) NOT NULL,
+  `laporan_pelanggan` varchar(50) DEFAULT NULL,
   `laporan_text` text NOT NULL,
   `laporan_status` enum('Menunggu','Proses','Selesai','Ditolak') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -43,9 +43,9 @@ CREATE TABLE `laporan` (
 CREATE TABLE `laporan_history` (
   `id` int(11) NOT NULL,
   `laporan_id` int(11) NOT NULL,
-  `actor` enum('Pelanggan','Teknisi','') NOT NULL,
+  `actor` enum('Pelanggan','Teknisi','Admin') NOT NULL,
   `teknisi_id` int(11) DEFAULT NULL,
-  `text` int(11) NOT NULL,
+  `text` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -66,7 +66,8 @@ CREATE TABLE `level` (
 
 INSERT INTO `level` (`id_level`, `nama_level`) VALUES
 (1, 'Admin'),
-(2, 'Pimpinan');
+(2, 'Pimpinan'),
+(8, 'Teknisi');
 
 -- --------------------------------------------------------
 
@@ -81,6 +82,13 @@ CREATE TABLE `pelanggan` (
   `pelanggan_alamat` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `pelanggan`
+--
+
+INSERT INTO `pelanggan` (`pelanggan_id`, `pelanggan_nama`, `pelanggan_telepon`, `pelanggan_alamat`) VALUES
+('12345', 'Yusron', '082186427595', 'Jalan Kapt. Arivai, Baturaja Timur, OKU');
+
 -- --------------------------------------------------------
 
 --
@@ -92,6 +100,14 @@ CREATE TABLE `teknisi` (
   `teknisi_nama` varchar(100) NOT NULL,
   `teknisi_telepon` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `teknisi`
+--
+
+INSERT INTO `teknisi` (`teknisi_id`, `teknisi_nama`, `teknisi_telepon`) VALUES
+('112233', 'Aditya Junio W', '087888288822'),
+('112244', 'Ilham', '08199299922');
 
 -- --------------------------------------------------------
 
@@ -114,8 +130,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `nip`, `nama`, `kontak`, `password`, `last_login`, `level_user`) VALUES
-(8, '11111', 'Admin', '081299929922', '$2y$10$i6LAb9xDh4G.pgVZ.cGknOUtRiPvK5SAW8SeMvAnICqKvnejunsQS', '2022-10-30 01:31:36', 1),
-(14, '22222', 'Pimpinan', '082189299222', '$2y$10$bMYspn86xs5Syrp9uclhu.WnCGUm9ZOhq2QBKaS8fWZGsxQro3aoW', '2022-09-18 02:46:04', 2);
+(8, '11111', 'Admin', '081299929922', '$2y$10$i6LAb9xDh4G.pgVZ.cGknOUtRiPvK5SAW8SeMvAnICqKvnejunsQS', '2022-12-02 22:37:03', 1),
+(14, '22222', 'Pimpinan', '082189299222', '$2y$10$bMYspn86xs5Syrp9uclhu.WnCGUm9ZOhq2QBKaS8fWZGsxQro3aoW', '2022-11-19 11:50:30', 2);
 
 --
 -- Indexes for dumped tables
@@ -132,7 +148,8 @@ ALTER TABLE `laporan`
 -- Indeks untuk tabel `laporan_history`
 --
 ALTER TABLE `laporan_history`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `laporan_id` (`laporan_id`);
 
 --
 -- Indeks untuk tabel `level`
@@ -168,19 +185,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `laporan`
 --
 ALTER TABLE `laporan`
-  MODIFY `laporan_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `laporan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `laporan_history`
 --
 ALTER TABLE `laporan_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `level`
 --
 ALTER TABLE `level`
-  MODIFY `id_level` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_level` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
@@ -193,10 +210,10 @@ ALTER TABLE `user`
 --
 
 --
--- Ketidakleluasaan untuk tabel `laporan`
+-- Ketidakleluasaan untuk tabel `laporan_history`
 --
-ALTER TABLE `laporan`
-  ADD CONSTRAINT `laporan_ibfk_1` FOREIGN KEY (`laporan_pelanggan`) REFERENCES `pelanggan` (`pelanggan_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `laporan_history`
+  ADD CONSTRAINT `laporan_history_ibfk_1` FOREIGN KEY (`laporan_id`) REFERENCES `laporan` (`laporan_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `user`
