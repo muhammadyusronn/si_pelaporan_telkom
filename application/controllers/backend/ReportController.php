@@ -5,6 +5,7 @@ class ReportController extends MY_Controller
     {
         parent::__construct();
         $this->load->model('ReportModel');
+        $this->load->model('PelangganModel');
         $this->load->model('TeknisiModel');
         $this->load->model('LaporanHistoryModel');
         $this->data['token'] = $this->session->userdata('token');
@@ -23,6 +24,12 @@ class ReportController extends MY_Controller
     public function proses($id = null)
     {
         if (isset($_POST['submit'])) {
+            $pelanggan = $this->ReportModel->get_data_join(['pelanggan'], ['pelanggan.pelanggan_id=laporan.laporan_pelanggan']);
+            if (!$pelanggan) {
+                echo 'Forbidden access!';
+                exit;
+            }
+
             $this->db->trans_start();
             $insert = $this->ReportModel->update($this->POST('laporan_id'), ['laporan_status' => 'Proses']);
             $this->db->trans_complete();
@@ -30,6 +37,12 @@ class ReportController extends MY_Controller
                 $this->flashmsg('Gagal mengubah data', 'danger');
                 redirect('laporan');
             } else {
+                $params = [
+                    'type' => '2',
+                    'pelanggan_telepon' => $pelanggan[0]->pelanggan_telepon,
+                    'pelanggan_nama' => $pelanggan[0]->pelanggan_nama
+                ];
+                $this->send_wa($params);
                 $this->flashmsg('Sukses mengubah data', 'success');
                 redirect('laporan');
             }
@@ -43,6 +56,11 @@ class ReportController extends MY_Controller
 
     public function reject($id = null)
     {
+        $pelanggan = $this->ReportModel->get_data_join(['pelanggan'], ['pelanggan.pelanggan_id=laporan.laporan_pelanggan']);
+        if (!$pelanggan) {
+            echo 'Forbidden access!';
+            exit;
+        }
         $this->db->trans_start();
         $this->ReportModel->update($id, ['laporan_status' => 'Ditolak']);
         $this->LaporanHistoryModel->insert(
@@ -58,6 +76,12 @@ class ReportController extends MY_Controller
             $this->flashmsg('Gagal menolak laporan', 'danger');
             redirect('laporan');
         } else {
+            $params = [
+                'type' => '4',
+                'pelanggan_telepon' => $pelanggan[0]->pelanggan_telepon,
+                'pelanggan_nama' => $pelanggan[0]->pelanggan_nama
+            ];
+            $this->send_wa($params);
             $this->flashmsg('Sukses menolak laporan ', 'success');
             redirect('laporan');
         }

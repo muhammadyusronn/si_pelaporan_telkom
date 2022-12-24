@@ -73,12 +73,18 @@ class MY_Controller extends CI_Controller
         $results = json_decode(curl_exec($curlHandle), true);
         curl_close($curlHandle);
     }
-    protected function send_sms($to, $message)
+    protected function send_sms($params)
     {
         $userkey = 'gnb6d0';
         $passkey = '18831kyv0o';
-        $telepon = $to;
-        $message = $message;
+        $telepon = $params['pelanggan_telepon'];
+        if ($params['type'] == '1') {
+            $messages = 'Salam Hormat, untuk Bapak/Ibu' . $params['pelanggan_nama'] . '. Laporan anda telah diproses. Mohon untuk menunggu terkait proses laporan yang sudah anda kirimkan. Terima kasih, Salam hormat.';
+        } else {
+            echo 'Failed!';
+            exit;
+        }
+        $message = $messages;
         $url = 'https://console.zenziva.net/reguler/api/sendsms/';
         $curlHandle = curl_init();
         curl_setopt($curlHandle, CURLOPT_URL, $url);
@@ -98,12 +104,24 @@ class MY_Controller extends CI_Controller
         curl_close($curlHandle);
     }
 
-    protected function send_wa($to, $message)
+    protected function send_wa($params)
     {
         $userkey = 'gnb6d0';
         $passkey = '18831kyv0o';
-        $telepon = $to;
-        $message = $message;
+        $telepon = $params['pelanggan_telepon'];
+        if ($params['type'] == '1') {
+            $messages = 'Salam Hormat, untuk Bapak/Ibu ' . $params['pelanggan_nama'] . '. Terima kasih telah menggunakan layanan Pelaporan Kerusakan secara Online. Laporan anda telah kami terima. Mohon untuk menunggu terkait proses laporan yang sudah anda kirimkan dalam 1 x 24 jam. Ini adalah pesan otomatis yang dikirim dari sistem kami. Jadi mohon untuk tidak membalas pesan ini. Terima kasih, Salam hormat.';
+        } else if ($params['type'] == '2') {
+            $messages = 'Salam Hormat, untuk Bapak/Ibu ' . $params['pelanggan_nama'] . '. Terima kasih telah menggunakan layanan Pelaporan Kerusakan secara Online. Laporan anda telah kami proses. Mohon untuk menunggu teknisi yang sudah kami kirimkan kepada anda dalam 2 x 24 jam dan teknisi kami akan akan menghubungi anda melalui nomor yang sudah terdaftar pada sistem kami. Ini adalah pesan otomatis yang dikirim dari sistem kami. Jadi mohon untuk tidak membalas pesan ini. Terima kasih, Salam hormat.';
+        } else if ($params['type'] == '3') {
+            $messages = 'Salam Hormat, untuk Bapak/Ibu ' . $params['pelanggan_nama'] . '. Terima kasih telah menggunakan layanan Pelaporan Kerusakan secara Online. Laporan anda telah kami ubah setatusnya menjadi selesai karena dari informasi dari teknisi kami bahwa permasalahan sudah diselesaikan. Ini adalah pesan otomatis yang dikirim dari sistem kami. Jadi mohon untuk tidak membalas pesan ini. Terima kasih, Salam hormat.';
+        } else if ($params['type'] == '4') {
+            $messages = 'Salam Hormat, untuk Bapak/Ibu ' . $params['pelanggan_nama'] . '. Terima kasih telah menggunakan layanan Pelaporan Kerusakan secara Online. Laporan anda untuk sementara kami tolak. Silahkan ajukan kembali laporan dan akan kami tinjau kembali. Ini adalah pesan otomatis yang dikirim dari sistem kami. Jadi mohon untuk tidak membalas pesan ini. Terima kasih, Salam hormat.';
+        } else {
+            echo 'Failed!';
+            exit;
+        }
+        $message = $messages;
         $url = 'https://console.zenziva.net/wareguler/api/sendWA/';
         $curlHandle = curl_init();
         curl_setopt($curlHandle, CURLOPT_URL, $url);

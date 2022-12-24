@@ -17,6 +17,11 @@ class ReportPageController extends MY_Controller
     public function create()
     {
         if (isset($_POST['submit'])) {
+            $pelanggan = $this->PelangganModel->get(['pelanggan_id' => $this->POST('pelanggan_id')]);
+            if (!$pelanggan) {
+                echo 'Forbidden access!';
+                exit;
+            }
             $this->db->trans_start();
             $id = $this->ReportModel->insertID(['laporan_pelanggan' => $this->POST('pelanggan_id'), 'laporan_text' => $this->POST('laporan_text'), 'laporan_status' => 'Menunggu']);
             $this->ReportHistoryModel->insert(['laporan_id' => $id, 'actor' => 'Pelanggan', 'teknisi_id' => NULL, 'text' => $this->POST('laporan_text'), 'created_at' => date("Y-m-d H:i:s")]);
@@ -25,6 +30,12 @@ class ReportPageController extends MY_Controller
                 $this->flashmsg('Laporan gagal', 'danger');
                 redirect('report');
             } else {
+                $params = [
+                    'type' => '1',
+                    'pelanggan_telepon' => $pelanggan[0]->pelanggan_telepon,
+                    'pelanggan_nama' => $pelanggan[0]->pelanggan_nama
+                ];
+                $this->send_wa($params);
                 $this->flashmsg('Laporan berhasil dikirim', 'success');
                 redirect('report');
             }
